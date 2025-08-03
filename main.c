@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
-typedef struct Musica { // Ele vai definir uma estrutura e dois ponteiros do tipo musica.
+typedef struct Musica {
     char nome[100];
     struct Musica *anterior;
     struct Musica *proxima;
@@ -10,12 +11,35 @@ typedef struct Musica { // Ele vai definir uma estrutura e dois ponteiros do tip
 
 Musica *inicio = NULL;
 Musica *atual = NULL;
+bool rodando = false;
 
-Musica* novaMusica(char *nome) {// função devolve um ponteiro para o tipo Musica. O ponteiro char vai apontar para todos os caracteres da palavra até o \0 que marca o final.
-    Musica *m = (Musica*) malloc(sizeof(Musica)); //Rapaz aqui é pro caba endoidar mesmo. um ponteiro do tipo Musica
+Musica* novaMusica(char *nome) {
+    Musica *m = (Musica*) malloc(sizeof(Musica));
     strcpy(m->nome, nome);
     m->proxima = m->anterior = m;
     return m;
+}
+
+void iniciar() {
+    if (atual == NULL) {
+        printf("==========================================================================\n");
+        printf("NENHUMA MÚSICA SELECIONADA.\n");
+        return;
+    }
+    rodando = true;
+    printf("==========================================================================\n");
+    printf("TOCANDO: %s\n", atual->nome);
+}
+
+void parar() {
+    if (rodando) {
+        printf("==========================================================================\n");
+        printf("MÚSICA PAUSADA: %s\n", atual ? atual->nome : "DESCONHECIDA");
+        rodando = false;
+    } else {
+        printf("==========================================================================\n");
+        printf("NADA ESTÁ TOCANDO.\n");
+    }
 }
 
 void adicionarMusica(char *nome) {
@@ -29,107 +53,98 @@ void adicionarMusica(char *nome) {
         m->proxima = inicio;
         inicio->anterior = m;
     }
-    printf("Adicionada: %s\n", nome);
-}
-
-void removerMusica(char *nome) {
-    if (inicio == NULL) return;
-
-    Musica *temp = inicio;
-    do {
-        if (strcmp(temp->nome, nome) == 0) {
-            if (temp->proxima == temp) {
-                free(temp);
-                inicio = atual = NULL;
-                return;
-            }
-            temp->anterior->proxima = temp->proxima;
-            temp->proxima->anterior = temp->anterior;
-            if (temp == inicio) inicio = temp->proxima;
-            if (temp == atual) atual = temp->proxima;
-            free(temp);
-            printf("Removida: %s\n", nome);
-            return;
-        }
-        temp = temp->proxima;
-    } while (temp != inicio);
-
-    printf("Música '%s' não encontrada.\n", nome);
+    printf("==========================================================================\n");
+    printf("ADICIONADA: %s \n", nome);
 }
 
 void tocarProxima() {
     if (atual == NULL) {
-        printf("Nenhuma música para tocar.\n");
+        printf("==========================================================================\n");
+        printf("NENHUMA MUSICA PARA TOCAR.\n");
         return;
     }
     atual = atual->proxima;
-    printf("Tocando: %s\n", atual->nome);
+    if (rodando)
+        printf("==========================================================================\n");
+        printf("PRÓXIMA: %s\n", atual->nome);
 }
 
 void tocarAnterior() {
     if (atual == NULL) {
-        printf("Nenhuma música para tocar.\n");
+        printf("==========================================================================\n");
+        printf("NENHUMA MUSICA PARA TOCAR.\n");
         return;
     }
     atual = atual->anterior;
-    printf("Tocando: %s\n", atual->nome);
+    if (rodando)
+        printf("==========================================================================\n");
+        printf("ANTERIOR: %s\n", atual->nome);
 }
 
 void listarMusicas() {
     if (inicio == NULL) {
-        printf("Lista de músicas vazia.\n");
+        printf("==========================================================================\n");
+        printf("LISTA DE MUSICAS VAZIA.\n");
         return;
     }
-
     Musica *temp = inicio;
-    printf("Lista de músicas:\n");
+    printf("==========================================================================\n");
+    printf("MÚSICAS DISPONÍVEIS:\n");
     do {
         printf("- %s\n", temp->nome);
         temp = temp->proxima;
     } while (temp != inicio);
 }
 
-
-int main(){
-
+int main() {
     int opcao;
+    char nomeMusica[100];
 
-    do{
-    printf("==========================================================================\n");
-    printf("|                      |>  SPOTICY TERMINAL EDITION                      |\n");
-    printf("==========================================================================\n");
-    printf("|                                                                        |\n");
-    printf("|                                                                        |\n");
-    printf("|                                                                        |\n");
-    printf("|                                                                        |\n");
-    printf("|                                                                        |\n");
-    printf("|                                                                        |\n");
-    printf("|                                                                        |\n");
-    printf("|                                                                        |\n");
-    printf("|                                                                        |\n");
-    printf("|                                                                        |\n");
-    printf("|                                                                        |\n");
-    printf("--------------------------------------------------------------------------\n");
-    printf("|   1 [ |<< ]    2 [ |> ]    3 [ || ]    4 [ >>| ]    5 [ + ]    6 [ -> ]|\n");
-    printf("--------------------------------------------------------------------------\n");
+    do {
+        printf("==========================================================================\n");
+        printf("|   1 [ |<< ]    2 [ |> ]    3 [ || ]    4 [ >>| ]    5 [ + ]    6 [ -> ]|\n");
+        printf("==========================================================================\n");
+        printf("|                      |>  SPOTICY TERMINAL EDITION                      |\n");
+        printf("==========================================================================\n");
 
-    opcao = scanf(" ");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        getchar();
 
-    switch(opcao){
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            break;
-        case 6:
-            break;
-    }
-    }while (opcao != 6);
-    
+        switch (opcao) {
+            case 1:
+                system("cls");
+                tocarAnterior();
+                break;
+            case 2:
+                system("cls");
+                iniciar();
+                break;
+            case 3:
+                system("cls");
+                parar();
+                break;
+            case 4:
+                system("cls");
+                tocarProxima();
+                break;
+            case 5:
+                system("cls");
+                printf("==========================================================================\n");
+                printf("DIGITE O NOME DA MUSICA: \n");
+                printf("==========================================================================\n");
+                fgets(nomeMusica, sizeof(nomeMusica), stdin);
+                nomeMusica[strcspn(nomeMusica, "\n")] = 0;
+                adicionarMusica(nomeMusica);
+                break;
+            case 6:
+                printf("Saindo do Spoticy...\n");
+                break;
+            default:
+                printf("Opção inválida!\n");
+        }
+
+    } while (opcao != 6);
+
     return 0;
-};
+}
