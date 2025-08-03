@@ -8,6 +8,8 @@ typedef struct Musica {
     struct Musica *proxima;
 } Musica;
 
+
+
 Musica *inicio = NULL;
 Musica *atual = NULL;
 
@@ -89,18 +91,47 @@ void listarMusicas() {
     } while (temp != inicio);
 }
 
-int main() {
-    adicionarMusica("Imagine");
-    adicionarMusica("Bohemian Rhapsody");
-    adicionarMusica("Hey Jude");
+
+int main(){
+
+    int opcao;
+
+    do{
+    printf("==========================================================================\n");
+    printf("|                      |>  SPOTICY TERMINAL EDITION                      |\n");
+    printf("==========================================================================\n");
+    printf("|                                                                        |\n");
+    printf("|                                                                        |\n");
+    printf("|                                                                        |\n");
+    printf("|                                                                        |\n");
+    printf("|                                                                        |\n");
+    printf("|                                                                        |\n");
+    printf("|                                                                        |\n");
+    printf("|                                                                        |\n");
+    printf("|                                                                        |\n");
+    printf("|                                                                        |\n");
+    printf("|                                                                        |\n");
+    printf("--------------------------------------------------------------------------\n");
+    printf("|   1 [ |<< ]    2 [ |> ]    3 [ || ]    4 [ >>| ]    5 [ + ]    6 [ -> ]|\n");
+    printf("--------------------------------------------------------------------------\n");
+
+    opcao = scanf(" ");
+
+    switch(opcao){
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+    }
+    }while (opcao != 6);
     
-    listarMusicas();
-
-    tocarProxima();
-    tocarAnterior();
-
-    removerMusica("Bohemian Rhapsody");
-    listarMusicas();
-
     return 0;
-}
+};
