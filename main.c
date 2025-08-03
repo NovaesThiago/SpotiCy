@@ -2,19 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct Musica {
+typedef struct Musica { // Ele vai definir uma estrutura e dois ponteiros do tipo musica.
     char nome[100];
     struct Musica *anterior;
     struct Musica *proxima;
 } Musica;
 
-
-
 Musica *inicio = NULL;
 Musica *atual = NULL;
 
-Musica* novaMusica(char *nome) {
-    Musica *m = (Musica*) malloc(sizeof(Musica));
+Musica* novaMusica(char *nome) {// função devolve um ponteiro para o tipo Musica. O ponteiro char vai apontar para todos os caracteres da palavra até o \0 que marca o final.
+    Musica *m = (Musica*) malloc(sizeof(Musica)); //Rapaz aqui é pro caba endoidar mesmo. um ponteiro do tipo Musica
     strcpy(m->nome, nome);
     m->proxima = m->anterior = m;
     return m;
